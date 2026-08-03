@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { getRecipeHF } from "../ai"
 import ReactMarkdown from "react-markdown"
 
@@ -7,6 +7,13 @@ export default function Main(){
     const [ingredients, setIngredients] = useState([])
 
     const [recipe, setRecipe] = useState("")
+    const recipeSection = useRef(null)
+
+    useEffect(() =>{
+        if(recipe !== "" && recipeSection !== null){
+            recipeSection.current.scrollIntoView({behavior:"smooth"})
+        }
+    }, [recipe])
 
     async function getRecipe(){
         const recipeMarkdown = await getRecipeHF(ingredients)
@@ -36,7 +43,7 @@ export default function Main(){
             {ingredients.length > 0 && <section className="ingredients">
                 <h2>Selected Ingredients:</h2>
                 <ul>{ingredientsListItems}</ul>
-                {ingredients.length > 3 && <div className="recipe">
+                {ingredients.length > 3 && <div className="recipe" ref={recipeSection}>
                     <div className="recipeHead">
                         <h2>Ready for a Recipe?</h2>
                         <p>Search for a recipe using Chef Claude</p>
