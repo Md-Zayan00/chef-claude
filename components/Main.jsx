@@ -1,8 +1,17 @@
 import { useState } from "react"
+import { getRecipeHF } from "../ai"
+import ReactMarkdown from "react-markdown"
 
 export default function Main(){
     
     const [ingredients, setIngredients] = useState([])
+
+    const [recipe, setRecipe] = useState("")
+
+    async function getRecipe(){
+        const recipeMarkdown = await getRecipeHF(ingredients)
+        setRecipe(recipeMarkdown)
+    }
 
     const ingredientsListItems = ingredients.map(ingredient => (
         <li key={ingredient}>{ingredient}</li>
@@ -32,8 +41,11 @@ export default function Main(){
                         <h2>Ready for a Recipe?</h2>
                         <p>Search for a recipe using Chef Claude</p>
                     </div>
-                    <button>Search</button>
+                    <button onClick={getRecipe}>Search</button>
                 </div>}
+            </section>}
+            {recipe && <section className="genRecipe">
+                <ReactMarkdown>{recipe}</ReactMarkdown>
             </section>}
         </main>
     )

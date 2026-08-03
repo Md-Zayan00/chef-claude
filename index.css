@@ -78,3 +78,7 @@ main > ul{
 .recipeHead > p{
     margin-bottom: 10px;
 }
+.genRecipe{
+    font-size: medium;
+    margin: 30px 20px;
+}
